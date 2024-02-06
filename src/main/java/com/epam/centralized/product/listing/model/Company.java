@@ -16,7 +16,6 @@ public class Company {
   private String name;
   private String email;
   @ManyToOne private User user;
-  @ManyToOne private CompanyCategory companyCategory;
   private CompanyStatus companyStatus;
   private LocalDateTime registerDate;
   private LocalDateTime updateDate;
