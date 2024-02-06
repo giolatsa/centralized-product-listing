@@ -1,6 +1,6 @@
 package com.epam.centralized.product.listing.model;
 
-import com.epam.centralized.product.listing.enums.ProductStatus;
+import com.epam.centralized.product.listing.model.enums.ProductStatus;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Data;

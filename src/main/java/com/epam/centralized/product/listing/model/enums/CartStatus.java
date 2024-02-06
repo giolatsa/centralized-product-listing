@@ -1,4 +1,4 @@
-package com.epam.centralized.product.listing.enums;
+package com.epam.centralized.product.listing.model.enums;
 
 public enum CartStatus {
   DELETED,

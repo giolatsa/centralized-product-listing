@@ -1,7 +1,7 @@
 package com.epam.centralized.product.listing.model;
 
-import com.epam.centralized.product.listing.enums.UserRole;
-import com.epam.centralized.product.listing.enums.UserStatus;
+import com.epam.centralized.product.listing.model.enums.UserRole;
+import com.epam.centralized.product.listing.model.enums.UserStatus;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Data;

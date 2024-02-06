@@ -1,6 +1,6 @@
 package com.epam.centralized.product.listing.model;
 
-import com.epam.centralized.product.listing.enums.CartStatus;
+import com.epam.centralized.product.listing.model.enums.CartStatus;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.Data;
