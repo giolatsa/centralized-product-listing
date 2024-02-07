@@ -16,7 +16,7 @@ public class Product {
   @ManyToOne private ProductCategory productCategory;
   @ManyToOne private Company company;
   private Long stockCount;
-  private Long price;
+  private Double price;
   private String name;
   private String description;
   private String imageUrl;
