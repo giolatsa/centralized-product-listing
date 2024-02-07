@@ -18,6 +18,8 @@ public class Product {
   private Long stockCount;
   private Long price;
   private String name;
+  private String description;
+  private String imageUrl;
   private ProductStatus productStatus;
   private LocalDateTime createDate;
   private LocalDateTime updateDate;
