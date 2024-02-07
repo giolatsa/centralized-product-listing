@@ -42,4 +42,14 @@ public class HomeController {
     model.addAttribute("products", products);
     return "home";
   }
+
+  @GetMapping("/search")
+  public String searchProducts(@RequestParam("query") String query, Model model) {
+    List<Product> matchingProducts = productService.searchProductsByNameOrDescription(query);
+    model.addAttribute("products", matchingProducts);
+    model.addAttribute("categories", categoryService.getAllCategories());
+    // Optionally, add the search query to the model if you want to display it in the view
+    model.addAttribute("searchQuery", query);
+    return "home";
+  }
 }

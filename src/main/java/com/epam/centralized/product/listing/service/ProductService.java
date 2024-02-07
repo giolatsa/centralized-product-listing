@@ -8,4 +8,6 @@ public interface ProductService {
   List<Product> getAllProducts();
 
   List<Product> getProductsByCategory(String categoryName);
+
+    List<Product> searchProductsByNameOrDescription(String query);
 }
