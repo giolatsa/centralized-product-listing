@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface ProductService {
 
-  List<Product> getAllProducts();
+  List<Product> getAllProducts(String username);
 
-  List<Product> getProductsByCategory(String categoryName);
+  List<Product> getProductsByCategory(String categoryName,String username);
 
-    List<Product> searchProductsByNameOrDescription(String query);
+    List<Product> searchProductsByNameOrDescription(String query,String username);
 }
