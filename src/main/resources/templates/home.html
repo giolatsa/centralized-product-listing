@@ -50,12 +50,13 @@
 
     <section class="card-container">
         <!-- CARDS WILL BE LOADED USING MODEL -->
-        <div th:each="product : ${products}">
+        <div th:each="product : ${products}" class="card">
             <!-- Each product will be referred to as 'product' inside this loop -->
             <img th:src="@{${product.imageUrl}}" th:alt="${product.description}" />
             <div class="card-info">
-                <span class="price" th:text="${product.price}"></span>
-                <p class="description" th:text="${product.description}"></p>
+
+                <span class="price" th:text="${product.price}+'$'"></span>
+                <p class="description" th:text="${product.name}"></p>
                 <!-- Assuming you have logic to determine if the button should be disabled and what text it should display -->
                 <button class="add-to-cart-btn" th:attr="data-item-id=${product.id},disabled=${false}" >Add to Cart</button>
             </div>
