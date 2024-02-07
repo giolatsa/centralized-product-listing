@@ -213,26 +213,40 @@ body {
     padding: 20px;
 }
 
-/* Cart Items Section Styling */
+/* Style for the cart items container */
 .cart-items {
     width: 70%;
+    margin: 20px;
 }
 
+/* Style for the list of items */
 .items-list {
     list-style-type: none;
     padding: 0;
 }
 
-.item {
+/* Style for each item in the list */
+.items-list li {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
 }
 
-.item img {
-    width: 100px;
-    margin-right: 10px;
+/* Style for the product details */
+.items-list li img {
+    margin-right: 20px;
 }
+
+.items-list li p {
+    margin: 0 10px;
+    flex-grow: 1;
+}
+
+.items-list li p span {
+    font-weight: bold;
+}
+
 
 .product-name, .price {
     margin-right: 10px;
@@ -247,7 +261,16 @@ body {
 
 .delete-icon {
     width: 40px;
-    height: 60px;
+    height: 40px;
+}
+.delete-icon-button{
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-icon-button:focus{
+    outline: none;
 }
 
 /* Order Summary Section Styling */
