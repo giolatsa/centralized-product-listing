@@ -57,4 +57,16 @@ public class CartServiceImpl implements CartService{
 
 
     }
+
+    @Override
+    public void removeProductFromCart(String username, Long productId) {
+        Cart cart = cartRepository.findByUserEmailAndCartStatus(username, CartStatus.ACTIVE).orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        cart.getProducts().remove(product);
+        cart.setUpdateDate(LocalDateTime.now());
+        cartRepository.save(cart);
+
+    }
 }
