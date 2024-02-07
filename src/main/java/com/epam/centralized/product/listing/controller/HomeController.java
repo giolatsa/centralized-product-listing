@@ -3,6 +3,8 @@ package com.epam.centralized.product.listing.controller;
 import com.epam.centralized.product.listing.model.Product;
 import com.epam.centralized.product.listing.service.ProductCategoryService;
 import com.epam.centralized.product.listing.service.ProductService;
+
+import java.security.Principal;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,19 +26,23 @@ public class HomeController {
   }
 
   @GetMapping
-  public String homePage(Model model) {
-    List<Product> products = productService.getAllProducts();
+  public String homePage(Model model, Principal principal) {
+    String username = principal.getName();
+
+    List<Product> products = productService.getAllProducts(username);
     model.addAttribute("products", products);
     model.addAttribute("categories", categoryService.getAllCategories());
     return "home";
   }
 
   @GetMapping("/category")
-  public String getProductsByCategory(@RequestParam("category") String categoryName, Model model) {
+  public String getProductsByCategory(@RequestParam("category") String categoryName, Model model, Principal principal) {
+    String username = principal.getName();
+
     List<Product> products =
         "all".equals(categoryName)
-            ? productService.getAllProducts()
-            : productService.getProductsByCategory(categoryName);
+            ? productService.getAllProducts(username)
+            : productService.getProductsByCategory(categoryName, username);
     model.addAttribute("categories", categoryService.getAllCategories());
 
     model.addAttribute("products", products);
@@ -44,12 +50,16 @@ public class HomeController {
   }
 
   @GetMapping("/search")
-  public String searchProducts(@RequestParam("query") String query, Model model) {
-    List<Product> matchingProducts = productService.searchProductsByNameOrDescription(query);
+  public String searchProducts(@RequestParam("query") String query, Model model, Principal principal) {
+    String username = principal.getName();
+
+    List<Product> matchingProducts = productService.searchProductsByNameOrDescription(query,username);
     model.addAttribute("products", matchingProducts);
     model.addAttribute("categories", categoryService.getAllCategories());
-    // Optionally, add the search query to the model if you want to display it in the view
-    model.addAttribute("searchQuery", query);
+
     return "home";
   }
+
+
+
 }
