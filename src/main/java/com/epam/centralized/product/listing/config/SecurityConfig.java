@@ -23,8 +23,6 @@ public class SecurityConfig {
     http.authorizeHttpRequests(
             (authorize) ->
                 authorize
-                    .requestMatchers("/home/**")
-                    .permitAll()
                     .requestMatchers("style.css")
                     .permitAll()
                     .requestMatchers("static/**")
