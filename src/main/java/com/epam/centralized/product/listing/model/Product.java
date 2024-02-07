@@ -23,4 +23,7 @@ public class Product {
   private ProductStatus productStatus;
   private LocalDateTime createDate;
   private LocalDateTime updateDate;
+
+  @Transient
+  private Boolean inCart;
 }
