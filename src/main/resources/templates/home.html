@@ -16,9 +16,12 @@
         </a>
         <span class="website-name">MarketBridge.com</span>
     </div>
-    <div class="search-bar">
-        <input id="search-bar" placeholder="Search..." type="text">
-    </div>
+    <form action="/home/search" method="get">
+        <div class="search-bar">
+            <input name="query" id="search-bar" placeholder="Search..." type="text">
+            <button type="submit">Search</button>
+        </div>
+    </form>
     <div class="icons">
         <a href="cart.html">
             <img alt="Cart" class="icon" src="/icons/cart-large-2-svgrepo-com.png">
