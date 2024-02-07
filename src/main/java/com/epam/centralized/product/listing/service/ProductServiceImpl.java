@@ -1,12 +1,11 @@
 package com.epam.centralized.product.listing.service;
 
+import com.epam.centralized.product.listing.model.Cart;
 import com.epam.centralized.product.listing.model.Product;
 import com.epam.centralized.product.listing.model.enums.CartStatus;
 import com.epam.centralized.product.listing.repository.CartRepository;
 import com.epam.centralized.product.listing.repository.ProductRepository;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -46,6 +45,19 @@ public class ProductServiceImpl implements ProductService {
 
 
     return markProductsInCart(username, finalFilteredProducts);
+
+
+  }
+
+  @Override
+  public List<Product> getProductsInCart(String username) {
+    Cart cart = cartRepository.findByUserEmailAndCartStatus(username, CartStatus.ACTIVE).orElse(
+            Cart.builder()
+                    .products(List.of())
+                    .build()
+    );
+
+    return cart.getProducts();
 
 
   }

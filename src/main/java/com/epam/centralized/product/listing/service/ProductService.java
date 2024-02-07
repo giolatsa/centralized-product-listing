@@ -10,4 +10,6 @@ public interface ProductService {
   List<Product> getProductsByCategory(String categoryName,String username);
 
     List<Product> searchProductsByNameOrDescription(String query,String username);
+
+    List<Product> getProductsInCart(String username);
 }
