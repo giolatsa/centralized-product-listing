@@ -23,7 +23,7 @@
         </div>
     </form>
     <div class="icons">
-        <a href="cart.html">
+        <a th:href="@{/cart}">
             <img alt="Cart" class="icon" src="/icons/cart-large-2-svgrepo-com.png">
         </a>
 
@@ -60,8 +60,11 @@
 
                 <span class="price" th:text="${product.price}+'$'"></span>
                 <p class="description" th:text="${product.name}"></p>
-                <!-- Assuming you have logic to determine if the button should be disabled and what text it should display -->
-                <button class="add-to-cart-btn" th:attr="data-item-id=${product.id},disabled=${false}" >Add to Cart</button>
+
+                <form th:action="@{/cart/add}" method="post">
+                    <input type="hidden" name="productId" th:value="${product.id}" />
+                    <button type="submit" class="add-to-cart-btn" th:disabled="${product.inCart}" th:text="${product.inCart} ? 'In Cart' : 'Add to Cart'"></button>
+                </form>
             </div>
         </div>
     </section>
