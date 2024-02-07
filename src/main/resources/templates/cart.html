@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>MarketBridge</title>
+  <link href="/style.css" rel="stylesheet">
+
+
+</head>
+<body>
+<header class="header">
+  <div class="logo-container">
+    <a th:href="@{/home}">
+      <img alt="Logo" class="logo" src="/icons/logo.png">
+    </a>
+    <span class="website-name">MarketBridge.com</span>
+  </div>
+  <form action="/home/search" method="get">
+    <div class="search-bar">
+      <input name="query" id="search-bar" placeholder="Search..." type="text">
+      <button type="submit">Search</button>
+    </div>
+  </form>
+  <div class="icons">
+    <a th:href="@{/cart}">
+      <img alt="Cart" class="icon" src="/icons/cart-large-2-svgrepo-com.png">
+    </a>
+
+
+    <a href="profile.html">
+      <img alt="My Profile" class="icon" src="/icons/profile-circle-svgrepo-com.png">
+    </a>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="cart-items">
+    <h2>My Cart</h2>
+    <ul class="items-list">
+      <ul class="items-list">
+        <li th:each="product : ${products}">
+          <!-- Display product details -->
+          <img th:src="${product.imageUrl}" alt="Product Image" style="width: 100px; height: 100px; object-fit: cover;">
+          <p th:text="${product.name}"></p>
+          <p>Price: <span th:text="${product.price}"></span>$</p>
+          <form th:action="@{/cart/remove}" method="post">
+            <input type="hidden" name="productId" th:value="${product.id}" />
+            <button class="delete-icon-button">
+              <img src="/icons/trash-can.png" alt="Delete" class="delete-icon">
+            </button>
+          </form>
+        </li>
+      </ul>
+    </ul>
+  </div>
+
+  <!-- Order Summary Section -->
+  <div class="order-summary">
+    <h2>My Order</h2>
+    <p>Total products: <span id="total-products" th:text="${productCount}">0</span></p>
+    <p>Total Price: $<span id="total-price" th:text="${total}">0</span></p>
+    <button class="checkout-btn">Checkout</button>
+  </div>
+
+</div>
+
+
+<footer class="site-footer">
+  <div class="footer-column footer-logo">
+    <img alt="Logo" class="footer-logo-image" src="/icons/logo.png">
+    <span class="website-name">MarketBridge.com</span>
+  </div>
+  <div class="footer-column footer-links">
+    <ul>
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#team">Our Team</a></li>
+      <li><a href="#blog">Blog</a></li>
+    </ul>
+  </div>
+  <div class="footer-column footer-contact">
+    <p>Contact Us</p>
+    <p>Phone Number: +1234567890</p>
+    <p>Email: contact@marketbridge.com</p>
+    <p>Address: 123 Main St, City, Country</p>
+    <div class="social-icons">
+      <a href="https://www.facebook.com"><img alt="Facebook" class="social-icon" src="/icons/facebook.png"></a>
+      <a href="https://www.instagram.com"><img alt="Instagram" class="social-icon" src="/icons/instagram (1).png"></a>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
