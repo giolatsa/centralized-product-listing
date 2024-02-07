@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>MarketBridge</title>
+    <link href="/style.css" rel="stylesheet">
+
+
+</head>
+<body>
+<header class="header">
+    <div class="logo-container">
+        <a href="index.html">
+            <img alt="Logo" class="logo" src="icons/logo.png">
+        </a>
+        <span class="website-name">MarketBridge.com</span>
+    </div>
+    <div class="search-bar">
+        <input id="search-bar" placeholder="Search..." type="text">
+    </div>
+    <div class="icons">
+        <a href="cart.html">
+            <img alt="Cart" class="icon" src="icons/cart-large-2-svgrepo-com.png">
+        </a>
+
+
+        <a href="profile.html">
+            <img alt="My Profile" class="icon" src="icons/profile-circle-svgrepo-com.png">
+        </a>
+    </div>
+</header>
+
+<div class="main-content">
+    <aside class="sidebar">
+        <h2>Categories</h2>
+        <ul>
+            <li data-category="Category 1">Toaster</li>
+            <li data-category="Category 2">Washing Machine</li>
+            <li data-category="Category 3">Microwave</li>
+            <li data-category="Category 4">Roomba</li>
+            <li data-category="Category 5">Tv</li>
+            <li data-category="all">Show All</li>
+        </ul>
+
+    </aside>
+
+
+    <section class="card-container">
+        <!-- CARDS WILL BE LOADED USING MODEL -->
+        <div th:each="product : ${products}">
+            <!-- Each product will be referred to as 'product' inside this loop -->
+            <img th:src="@{${product.imageUrl}}" th:alt="${product.description}" />
+            <div class="card-info">
+                <span class="price" th:text="${product.price}"></span>
+                <p class="description" th:text="${product.description}"></p>
+                <!-- Assuming you have logic to determine if the button should be disabled and what text it should display -->
+                <button class="add-to-cart-btn" th:attr="data-item-id=${product.id},disabled=${false}" >Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+
+<footer class="site-footer">
+    <div class="footer-column footer-logo">
+        <img alt="Logo" class="footer-logo-image" src="icons/logo.png">
+        <span class="website-name">MarketBridge.com</span>
+    </div>
+    <div class="footer-column footer-links">
+        <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#team">Our Team</a></li>
+            <li><a href="#blog">Blog</a></li>
+        </ul>
+    </div>
+    <div class="footer-column footer-contact">
+        <p>Contact Us</p>
+        <p>Phone Number: +1234567890</p>
+        <p>Email: contact@marketbridge.com</p>
+        <p>Address: 123 Main St, City, Country</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com"><img alt="Facebook" class="social-icon" src="icons/facebook.png"></a>
+            <a href="https://www.instagram.com"><img alt="Instagram" class="social-icon" src="icons/instagram (1).png"></a>
+        </div>
+    </div>
+</footer>
+
+
+</body>
+</html>
