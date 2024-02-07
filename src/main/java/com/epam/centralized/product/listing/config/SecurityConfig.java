@@ -20,8 +20,19 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-        .httpBasic(Customizer.withDefaults())
+    http.authorizeHttpRequests(
+            (authorize) ->
+                authorize
+                    .requestMatchers("/home/**")
+                    .permitAll()
+                    .requestMatchers("style.css")
+                    .permitAll()
+                    .requestMatchers("static/**")
+                    .permitAll()
+                    .requestMatchers("icons/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
         .formLogin(Customizer.withDefaults())
         .logout(Customizer.withDefaults());
 
