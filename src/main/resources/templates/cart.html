@@ -61,11 +61,24 @@
     <h2>My Order</h2>
     <p>Total products: <span id="total-products" th:text="${productCount}">0</span></p>
     <p>Total Price: $<span id="total-price" th:text="${total}">0</span></p>
-    <button class="checkout-btn">Checkout</button>
+    <a th:href="@{/cart(showCheckoutModal=${true})}" class="checkout-btn">Checkout</a>
+
   </div>
+
+
 
 </div>
 
+<div  class="modal" th:if="${showCheckoutModal}">
+  <div class="modal-content">
+    <h2>Confirm Checkout</h2>
+    <p>Are you sure you want to proceed to checkout?</p>
+    <form th:action="@{/cart/purchase}" method="post">
+      <button type="submit" class="modal-confirm-btn">Yes, proceed</button>
+      <a th:href="@{/cart}" class="modal-cancel-btn">Cancel</a>
+    </form>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="footer-column footer-logo">

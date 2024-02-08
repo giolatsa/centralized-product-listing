@@ -27,16 +27,19 @@ public class CartController {
     }
 
     @GetMapping
-    public String cart(Model model, Principal principal) {
+    public String cart(Model model, Principal principal,
+                       @RequestParam(value = "showCheckoutModal", required = false, defaultValue = "false") boolean showCheckoutModal) {
         String username = principal.getName();
-
         List<Product> products = productService.getProductsInCart(username);
-
         Double total = products.stream().mapToDouble(Product::getPrice).sum();
 
         model.addAttribute("products", products);
         model.addAttribute("total", total);
         model.addAttribute("productCount", products.size());
+        model.addAttribute("showCheckoutModal", showCheckoutModal);
+
+        System.out.println(showCheckoutModal);
+
         return "cart";
     }
 
