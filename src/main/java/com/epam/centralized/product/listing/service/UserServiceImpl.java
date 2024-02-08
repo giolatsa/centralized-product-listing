@@ -25,4 +25,17 @@ public class UserServiceImpl implements UserService{
         return userRepository.save(user);
 
     }
+
+    @Override
+    public boolean checkIfValidOldPassword(User user, String currentPassword) {
+
+        return user.getPassword().equals(currentPassword);
+    }
+
+    @Override
+    public void changeUserPassword(User user, String newPassword) {
+        user.setPassword(newPassword);
+        userRepository.save(user);
+
+    }
 }

@@ -7,6 +7,7 @@ import com.epam.centralized.product.listing.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -65,6 +66,44 @@ public class ProfileController {
 
     }
 
+    @GetMapping("/password")
+    public String showPasswordForm(Model model,Principal principal) {
+        String email = principal.getName();
+        User userDetails = userService.findByEmail(email);
+
+        model.addAttribute("user",userDetails );
+        model.addAttribute("section", "password");
+
+        return "profile";
+    }
+
+    @PostMapping("/password/change")
+    public String changeUserPassword(Principal principal, @RequestParam("currentPassword") String currentPassword,
+                                     @RequestParam("newPassword") String newPassword,
+                                     @RequestParam("confirmNewPassword") String confirmNewPassword,
+                                     RedirectAttributes redirectAttributes, Model model) {
+        // Retrieve the logged-in user
+        String username = principal.getName();
+        User user = userService.findByEmail(username);
+
+        model.addAttribute("user",user );
+
+        // Check if current password is correct and new passwords match
+        if (!userService.checkIfValidOldPassword(user, currentPassword)) {
+            redirectAttributes.addFlashAttribute("error", "Current password is incorrect.");
+            return "redirect:/profile/password";
+        }
+
+        if (!newPassword.equals(confirmNewPassword)) {
+            redirectAttributes.addFlashAttribute("error", "New passwords do not match.");
+            return "redirect:/profile/password";
+        }
+
+        // Proceed with changing the password
+        userService.changeUserPassword(user, newPassword);
+        redirectAttributes.addFlashAttribute("success", "Password successfully changed.");
+        return "redirect:/profile";
+    }
 
 
 }

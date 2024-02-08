@@ -44,11 +44,20 @@
     <ul class="profile-actions">
       <li><a th:href="@{/profile/orders}">My Orders</a></li>
       <li><a th:href="@{/profile}">My Details</a></li>
-      <li><a href="#change-password">Change Password</a></li>
+      <li><a th:href="@{/profile/password}">Change Password</a></li>
+      <li><a th:href="@{/logout}">Logout</a></li>
     </ul>
   </aside>
+  <div th:if="${error}" class="flash-message error">
+    <p th:text="${error}"></p>
+  </div>
+  <div th:if="${success}" class="flash-message success">
+    <p th:text="${success}"></p>
+  </div>
+
 
   <div th:if="${section == 'details'}" class="profile-details">
+    <h2>My Details</h2>
     <form action="@{/updateProfile}" th:action="@{/profile/update}" th:object="${user}" method="post" >
       <!-- Hidden fields for data not displayed in the form -->
       <input type="hidden"  th:field="${user.id}">
@@ -121,6 +130,27 @@
       </div>
     </div>
   </div>
+
+
+  <div th:if="${section == 'password'}">
+    <h2>Change Password</h2>
+    <form th:action="@{/profile/password/change}" method="post" class="password-change-form">
+      <div class="form-group">
+        <label for="currentPassword">Current Password</label>
+        <input type="password" id="currentPassword" name="currentPassword" required>
+      </div>
+      <div class="form-group">
+        <label for="newPassword">New Password</label>
+        <input type="password" id="newPassword" name="newPassword" required>
+      </div>
+      <div class="form-group">
+        <label for="confirmNewPassword">Confirm New Password</label>
+        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+      </div>
+      <button type="submit" class="save-btn">Change Password</button>
+    </form>
+  </div>
+
 
 </div>
 
