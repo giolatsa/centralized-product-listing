@@ -42,61 +42,85 @@
       <h2 th:text="${user.firstName +' '+ user.lastName}"></h2>
     </div>
     <ul class="profile-actions">
-      <li><a href="#my-orders">My Orders</a></li>
+      <li><a th:href="@{/profile/orders}">My Orders</a></li>
       <li><a th:href="@{/profile}">My Details</a></li>
       <li><a href="#change-password">Change Password</a></li>
     </ul>
   </aside>
 
+  <div th:if="${section == 'details'}" class="profile-details">
+    <form action="@{/updateProfile}" th:action="@{/profile/update}" th:object="${user}" method="post" >
+      <!-- Hidden fields for data not displayed in the form -->
+      <input type="hidden"  th:field="${user.id}">
+      <input type="hidden"  th:field="${user.password}">
+      <input type="hidden"  th:field="${user.registerDate}">
+      <input type="hidden"  th:field="${user.updateDate}">
+      <input type="hidden"  th:field="${user.userStatus}">
+      <input type="hidden"  th:field="${user.userRole}">
+      <input type="hidden"  th:field="${user.profileImageUrl}">
 
-  <form action="@{/updateProfile}" th:action="@{/profile/update}" th:object="${user}" method="post" class="profile-details">
-    <!-- Hidden fields for data not displayed in the form -->
-    <input type="hidden"  th:field="${user.id}">
-    <input type="hidden"  th:field="${user.password}">
-    <input type="hidden"  th:field="${user.registerDate}">
-    <input type="hidden"  th:field="${user.updateDate}">
-    <input type="hidden"  th:field="${user.userStatus}">
-    <input type="hidden"  th:field="${user.userRole}">
-    <input type="hidden"  th:field="${user.profileImageUrl}">
-
-    <section >
-      <div class="detail-row">
-        <div class="detail">
-          <label for="first-name">First Name</label>
-          <input type="text" id="first-name" th:field="${user.firstName}">
+      <section >
+        <div class="detail-row">
+          <div class="detail">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" th:field="${user.firstName}">
+          </div>
+          <div class="detail">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" th:field="${user.lastName}">
+          </div>
         </div>
-        <div class="detail">
-          <label for="last-name">Last Name</label>
-          <input type="text" id="last-name" th:field="${user.lastName}">
+        <div class="detail-row">
+          <div class="detail">
+            <label for="mobile">Mobile</label>
+            <input type="text" id="mobile" th:field="${user.mobile}">
+          </div>
+          <div class="detail">
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="${user.email}">
+          </div>
+        </div>
+        <div class="detail-row">
+          <div class="detail">
+            <label for="gender">Gender</label>
+            <input type="text" id="gender" th:field="${user.gender}">
+          </div>
+          <div class="detail">
+            <label for="dob">Date of Birth</label>
+            <input type="text" id="dob" th:field="${user.dateOfBirth}">
+          </div>
+        </div>
+        <div class="detail-row">
+          <button type="submit" class="save-btn">Save</button>
+        </div>
+      </section>
+    </form>
+  </div>
+
+
+  <div th:if="${section == 'orders'}">
+    <h2>My Orders</h2>
+    <div class="my-orders-list">
+      <div th:each="order : ${orders}" class="my-order">
+        <div class="my-order-summary">
+          <p>Order #: <span th:text="${order.id}"></span></p>
+          <p>Products: <span th:text="${order.totalQuantity}"></span></p>
+          <p>Total Price: $<span th:text="${order.totalPrice}"></span></p>
+          <p>Order Date: <span th:text="${order.createDate}"></span></p>
+          <button type="button" class="order-details-btn" onclick="toggleDetails(this)">Show Details</button>
+        </div>
+        <div class="my-order-details" style="display: none;">
+          <ul>
+            <li th:each="product : ${order.cart.products}">
+              <p th:text="${product.name}">Product Name</p>
+              <p>Price: $<span th:text="${product.price}"></span></p>
+              <!-- Add more product details as needed -->
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="detail-row">
-        <div class="detail">
-          <label for="mobile">Mobile</label>
-          <input type="text" id="mobile" th:field="${user.mobile}">
-        </div>
-        <div class="detail">
-          <label for="email">Email</label>
-          <input type="email" id="email" th:field="${user.email}">
-        </div>
-      </div>
-      <div class="detail-row">
-        <div class="detail">
-          <label for="gender">Gender</label>
-          <input type="text" id="gender" th:field="${user.gender}">
-        </div>
-        <div class="detail">
-          <label for="dob">Date of Birth</label>
-          <input type="text" id="dob" th:field="${user.dateOfBirth}">
-        </div>
-      </div>
-      <div class="detail-row">
-        <button type="submit" class="save-btn">Save</button>
-      </div>
-    </section>
-  </form>
-
-
+    </div>
+  </div>
 
 </div>
 
@@ -126,6 +150,20 @@
     </div>
   </div>
 </footer>
+
+
+<script>
+  function toggleDetails(button) {
+    var detailsDiv = button.parentElement.nextElementSibling;
+    if (detailsDiv.style.display === "none") {
+      detailsDiv.style.display = "block";
+      button.textContent = "Hide Details";
+    } else {
+      detailsDiv.style.display = "none";
+      button.textContent = "Show Details";
+    }
+  }
+</script>
 
 
 </body>

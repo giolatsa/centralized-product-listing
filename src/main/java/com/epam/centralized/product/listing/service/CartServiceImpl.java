@@ -88,17 +88,25 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public void checkout(String username) {
+    //find user's active cart
     Cart cart =
         cartRepository
             .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
             .orElseThrow(() -> new RuntimeException("Cart not found"));
-
+    //set cart status to bought and update date
     cart.setCartStatus(CartStatus.BOUGHT);
     cart.setUpdateDate(LocalDateTime.now());
     cartRepository.save(cart);
 
+    //create order
     Order order =
-        Order.builder().user(cart.getUser()).cart(cart).createDate(LocalDateTime.now()).build();
+        Order.builder()
+                .user(cart.getUser())
+                .cart(cart)
+                .createDate(LocalDateTime.now())
+                .totalPrice(cart.getProducts().stream().mapToDouble(Product::getPrice).sum())
+                .totalQuantity(cart.getProducts().size())
+                .build();
 
     orderRepository.save(order);
   }

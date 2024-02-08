@@ -22,5 +22,9 @@ public class Order {
   @ManyToOne private User user;
   @OneToOne private Cart cart;
 
+  private Double totalPrice;
+
+  private Integer totalQuantity;
+
   private LocalDateTime createDate;
 }

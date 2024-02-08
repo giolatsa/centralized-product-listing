@@ -515,3 +515,42 @@ body {
 .save-btn:hover {
     background-color: #45a049;
 }
+
+
+.my-orders-list .my-order {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    max-height: calc(100vh - 60px - 100px);
+}
+
+.my-order-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-height: calc(100vh - 60px - 100px);
+}
+
+.my-order-summary > p {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+
+.my-order-details {
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.order-details-btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.order-details-btn:hover {
+    background-color: #0056b3;
+}
