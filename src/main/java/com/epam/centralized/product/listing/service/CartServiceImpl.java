@@ -1,10 +1,12 @@
 package com.epam.centralized.product.listing.service;
 
 import com.epam.centralized.product.listing.model.Cart;
+import com.epam.centralized.product.listing.model.Order;
 import com.epam.centralized.product.listing.model.Product;
 import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.model.enums.CartStatus;
 import com.epam.centralized.product.listing.repository.CartRepository;
+import com.epam.centralized.product.listing.repository.OrderRepository;
 import com.epam.centralized.product.listing.repository.ProductRepository;
 import com.epam.centralized.product.listing.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,14 @@ public class CartServiceImpl implements CartService{
 
     private final UserRepository userRepository;
 
+    private final OrderRepository orderRepository;
 
-    public CartServiceImpl(CartRepository cartRepository, ProductRepository productRepository, UserRepository userRepository) {
+
+    public CartServiceImpl(CartRepository cartRepository, ProductRepository productRepository, UserRepository userRepository, OrderRepository orderRepository) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
     }
 
 
@@ -68,5 +73,22 @@ public class CartServiceImpl implements CartService{
         cart.setUpdateDate(LocalDateTime.now());
         cartRepository.save(cart);
 
+    }
+
+    @Override
+    public void checkout(String username) {
+        Cart cart = cartRepository.findByUserEmailAndCartStatus(username, CartStatus.ACTIVE).orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        cart.setCartStatus(CartStatus.BOUGHT);
+        cart.setUpdateDate(LocalDateTime.now());
+        cartRepository.save(cart);
+
+        Order order = Order.builder()
+                .user(cart.getUser())
+                .cart(cart)
+                .createDate(LocalDateTime.now())
+                .build();
+
+        orderRepository.save(order);
     }
 }

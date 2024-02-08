@@ -57,5 +57,12 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    @PostMapping("/checkout")
+    public String checkout(Principal principal) {
+        String username = principal.getName(); // Get logged-in username
+        cartService.checkout(username);
+        return "redirect:/cart";
+    }
+
 
 }
