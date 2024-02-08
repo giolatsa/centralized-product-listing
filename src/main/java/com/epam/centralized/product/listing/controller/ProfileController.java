@@ -110,6 +110,9 @@ public class ProfileController {
         String email = principal.getName();
         User userDetails = userService.findByEmail(email);
 
+
+        Boolean hasCompany = companyService.userHasCompany(userDetails.getId());
+        model.addAttribute("hasCompany", hasCompany);
         model.addAttribute("user",userDetails );
         model.addAttribute("section", "password");
 
