@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-  @Autowired
-  private UserRepository
-      userRepository;
+  @Autowired private UserRepository userRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,6 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
   }
 
   private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-    return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+user.getUserRole().name()));
+    return Collections.singletonList(
+        new SimpleGrantedAuthority("ROLE_" + user.getUserRole().name()));
   }
 }

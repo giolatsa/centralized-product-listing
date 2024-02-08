@@ -14,5 +14,5 @@ public interface ProductService {
 
   List<Product> getProductsInCart(String username);
 
-    List<Product> findAllProductsByCompany(Company company);
+  List<Product> findAllProductsByCompany(Company company);
 }

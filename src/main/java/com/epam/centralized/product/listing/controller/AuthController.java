@@ -9,27 +9,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AuthController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
+  public AuthController(UserService userService) {
+    this.userService = userService;
+  }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
+  @GetMapping("/login")
+  public String login() {
+    return "login";
+  }
 
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
+  @GetMapping("/register")
+  public String register() {
+    return "register";
+  }
 
-    @PostMapping("/register/user")
-    public String registerUser(User user){
+  @PostMapping("/register/user")
+  public String registerUser(User user) {
 
-        userService.createUser(user);
+    userService.createUser(user);
 
-        return "redirect:/login";
-    }
+    return "redirect:/login";
+  }
 }

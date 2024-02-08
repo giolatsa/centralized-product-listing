@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ProductRepository extends JpaRepository<Product, Long> {
   List<Product> findByProductCategoryCategoryName(String categoryName);
 
-    List<Product> findAllByCompany(Company company);
+  List<Product> findAllByCompany(Company company);
 }

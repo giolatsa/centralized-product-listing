@@ -62,13 +62,12 @@ public class ProductServiceImpl implements ProductService {
     return cart.getProducts();
   }
 
-    @Override
-    public List<Product> findAllProductsByCompany(Company company) {
-          return productRepository.findAllByCompany(company);
+  @Override
+  public List<Product> findAllProductsByCompany(Company company) {
+    return productRepository.findAllByCompany(company);
+  }
 
-    }
-
-    private List<Product> markProductsInCart(String username, List<Product> products) {
+  private List<Product> markProductsInCart(String username, List<Product> products) {
     cartRepository
         .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
         .ifPresentOrElse(

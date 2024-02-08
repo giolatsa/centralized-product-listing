@@ -4,58 +4,54 @@ import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.model.enums.UserRole;
 import com.epam.centralized.product.listing.model.enums.UserStatus;
 import com.epam.centralized.product.listing.repository.UserRepository;
+import java.time.LocalDateTime;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+  private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  public UserServiceImpl(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
+  @Override
+  public User findByEmail(String email) {
+    return userRepository
+        .findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+  }
 
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-    }
+  @Override
+  public User updateUserById(User user, Long id) {
+    userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    return userRepository.save(user);
+  }
 
-    @Override
-    public User updateUserById(User user, Long id) {
-        userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        return userRepository.save(user);
+  @Override
+  public boolean checkIfValidOldPassword(User user, String currentPassword) {
 
-    }
+    return bCryptPasswordEncoder.matches(currentPassword, user.getPassword());
+  }
 
-    @Override
-    public boolean checkIfValidOldPassword(User user, String currentPassword) {
+  @Override
+  public void changeUserPassword(User user, String newPassword) {
+    user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+    userRepository.save(user);
+  }
 
-        return bCryptPasswordEncoder.matches(currentPassword, user.getPassword());
-    }
+  @Override
+  public void createUser(User user) {
 
-    @Override
-    public void changeUserPassword(User user, String newPassword) {
-        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
-        userRepository.save(user);
+    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    user.setUserRole(UserRole.CUSTOMER);
+    user.setUserStatus(UserStatus.ACTIVE);
+    user.setRegisterDate(LocalDateTime.now());
 
-    }
-
-    @Override
-    public void createUser(User user) {
-
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setUserRole(UserRole.CUSTOMER);
-        user.setUserStatus(UserStatus.ACTIVE);
-        user.setRegisterDate(LocalDateTime.now());
-
-
-        userRepository.save(user);
-
-    }
+    userRepository.save(user);
+  }
 }
