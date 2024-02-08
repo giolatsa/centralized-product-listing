@@ -14,11 +14,10 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
@@ -42,7 +41,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void changeUserPassword(User user, String newPassword) {
-        user.setPassword(newPassword);
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userRepository.save(user);
 
     }
