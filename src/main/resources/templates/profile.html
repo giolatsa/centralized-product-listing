@@ -45,6 +45,7 @@
       <li><a th:href="@{/profile/orders}">My Orders</a></li>
       <li><a th:href="@{/profile}">My Details</a></li>
       <li><a th:href="@{/profile/password}">Change Password</a></li>
+      <li><a th:href="@{/company}">Create Company</a></li>
       <form th:action="@{/logout}" method="post" >
         <input type="hidden" name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <button type="submit"  class="logout-btn">Logout</button>
