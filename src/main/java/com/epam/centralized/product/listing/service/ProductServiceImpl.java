@@ -1,6 +1,7 @@
 package com.epam.centralized.product.listing.service;
 
 import com.epam.centralized.product.listing.model.Cart;
+import com.epam.centralized.product.listing.model.Company;
 import com.epam.centralized.product.listing.model.Product;
 import com.epam.centralized.product.listing.model.enums.CartStatus;
 import com.epam.centralized.product.listing.repository.CartRepository;
@@ -61,7 +62,13 @@ public class ProductServiceImpl implements ProductService {
     return cart.getProducts();
   }
 
-  private List<Product> markProductsInCart(String username, List<Product> products) {
+    @Override
+    public List<Product> findAllProductsByCompany(Company company) {
+          return productRepository.findAllByCompany(company);
+
+    }
+
+    private List<Product> markProductsInCart(String username, List<Product> products) {
     cartRepository
         .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
         .ifPresentOrElse(

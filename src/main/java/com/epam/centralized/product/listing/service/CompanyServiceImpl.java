@@ -38,4 +38,23 @@ public class CompanyServiceImpl implements CompanyService{
 
         return savedCompany;
     }
+
+    @Override
+    public Boolean userHasCompany(Long userId) {
+
+        return companyRepository.findByUserId(userId).isPresent();
+    }
+
+    @Override
+    public Company findByUserEmail(String email) {
+        User user=userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        return companyRepository.findByUserId(user.getId()).orElse(null);
+    }
+
+    @Override
+    public Company updateCompany(Company company, String email) {
+        User user=userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return companyRepository.save(company);
+    }
 }

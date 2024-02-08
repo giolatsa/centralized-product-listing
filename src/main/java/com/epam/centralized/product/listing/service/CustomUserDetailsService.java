@@ -32,7 +32,6 @@ public class CustomUserDetailsService implements UserDetailsService {
   }
 
   private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-    // Convert your user roles or authorities from the user object to GrantedAuthority objects
-    return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+user.getUserRole().name()));
   }
 }

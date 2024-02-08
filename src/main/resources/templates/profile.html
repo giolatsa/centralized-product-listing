@@ -45,7 +45,9 @@
       <li><a th:href="@{/profile/orders}">My Orders</a></li>
       <li><a th:href="@{/profile}">My Details</a></li>
       <li><a th:href="@{/profile/password}">Change Password</a></li>
-      <li><a th:href="@{/company}">Create Company</a></li>
+      <li th:if="${!hasCompany}"><a th:href="@{/company}">Create Company</a></li>
+      <li th:if="${hasCompany}"><a th:href="@{/profile/company}">Company Details</a></li>
+
       <form th:action="@{/logout}" method="post" >
         <input type="hidden" name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <button type="submit"  class="logout-btn">Logout</button>
@@ -157,12 +159,67 @@
   </div>
 
 
+  <div th:if="${section == 'company'}" class="profile-details">
+    <div class="company-details">
+      <h2>Company Details</h2>
+      <form th:action="@{/company/update}" method="post" th:object="${company}">
+        <!-- Hidden fields -->
+        <input type="hidden" th:field="${company.id}">
+        <input type="hidden" th:field="${company.user}">
+        <input type="hidden" th:field="${company.companyStatus}">
+        <input type="hidden" th:field="${company.registerDate}">
+        <input type="hidden" th:field="${company.updateDate}">
+
+        <section>
+          <div class="detail-row">
+            <div class="detail">
+              <label for="name">Company Name</label>
+              <input type="text" id="name" th:field="${company.name}" required>
+            </div>
+            <div class="detail">
+              <label for="email">Email</label>
+              <input type="email" id="company-email" th:field="${company.email}" required>
+            </div>
+          </div>
+          <div class="detail-row">
+            <button type="submit" class="save-btn">Save</button>
+          </div>
+        </section>
+      </form>
+    </div>
+
+
+    <div class="company-products">
+      <h2>Company Products</h2>
+      <div class="product-list">
+        <button class="add-product-btn">Add New Product</button>
+        <ul>
+          <li th:each="product : ${products}">
+            <div class="product-item">
+              <img th:src="${product.imageUrl}" alt="Product Image" class="product-icon">
+              <div class="product-info">
+                <h3 th:text="${product.name}"></h3>
+                <p>Category: <span th:text="${product.productCategory.categoryName}"></span></p>
+                <p>Price: <span th:text="${product.price}"></span></p>
+                <p>Added: <span th:text="${#dates.format(product.createDate, 'dd-MM-yyyy')}"></span></p>
+                <p>Updated: <span th:text="${#dates.format(product.updateDate, 'dd-MM-yyyy')}"></span></p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+
+
 </div>
 
 
 
 
-<footer class="site-footer">
+<footer class="site-footer" th:if="${!(section == 'company')}">
   <div class="footer-column footer-logo">
     <img alt="Logo" class="footer-logo-image" src="/icons/logo.png">
     <span class="website-name">MarketBridge.com</span>

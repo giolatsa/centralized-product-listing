@@ -35,4 +35,10 @@ public class CompanyController {
 
         return "redirect:/profile";
     }
+
+    @PostMapping("/update")
+    public String updateCompanyDetails(Company company, Model model, Principal principal) {
+        companyService.updateCompany(company,principal.getName());
+        return "redirect:/profile/company";
+    }
 }
