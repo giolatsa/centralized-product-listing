@@ -28,55 +28,55 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public List<Product> getProductsByCategory(String categoryName,String username) {
-    List<Product> productsByCategory = productRepository.findByProductCategoryCategoryName(categoryName);
+  public List<Product> getProductsByCategory(String categoryName, String username) {
+    List<Product> productsByCategory =
+        productRepository.findByProductCategoryCategoryName(categoryName);
 
     return markProductsInCart(username, productsByCategory);
   }
 
   @Override
-  public List<Product> searchProductsByNameOrDescription(String query,String username) {
+  public List<Product> searchProductsByNameOrDescription(String query, String username) {
     List<Product> filteredProducts = productRepository.findAll();
 
-    //filter products by query
-    List<Product> finalFilteredProducts = filteredProducts.stream()
-            .filter(p -> p.getName().toLowerCase().contains(query.toLowerCase()) ||
-                    p.getDescription().toLowerCase().contains(query.toLowerCase())).toList();
-
+    // filter products by query
+    List<Product> finalFilteredProducts =
+        filteredProducts.stream()
+            .filter(
+                p ->
+                    p.getName().toLowerCase().contains(query.toLowerCase())
+                        || p.getDescription().toLowerCase().contains(query.toLowerCase()))
+            .toList();
 
     return markProductsInCart(username, finalFilteredProducts);
-
-
   }
 
   @Override
   public List<Product> getProductsInCart(String username) {
-    Cart cart = cartRepository.findByUserEmailAndCartStatus(username, CartStatus.ACTIVE).orElse(
-            Cart.builder()
-                    .products(List.of())
-                    .build()
-    );
+    Cart cart =
+        cartRepository
+            .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
+            .orElse(Cart.builder().products(List.of()).build());
 
     return cart.getProducts();
-
-
   }
 
   private List<Product> markProductsInCart(String username, List<Product> products) {
-    cartRepository.findByUserEmailAndCartStatus(username, CartStatus.ACTIVE).ifPresentOrElse(
+    cartRepository
+        .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
+        .ifPresentOrElse(
             cart -> {
-              //if cart is present, mark products in cart
+              // if cart is present, mark products in cart
               List<Product> productsInCart = cart.getProducts();
-              products.forEach(p -> {
-                if (productsInCart.contains(p)) {
-                  p.setInCart(true);
-                }
-              });
+              products.forEach(
+                  p -> {
+                    if (productsInCart.contains(p)) {
+                      p.setInCart(true);
+                    }
+                  });
             },
-            //if cart is not present, mark all products as not in cart
-            () -> products.forEach(p -> p.setInCart(false))
-    );
-
+            // if cart is not present, mark all products as not in cart
+            () -> products.forEach(p -> p.setInCart(false)));
 
     return products;
   }

@@ -473,28 +473,28 @@ body {
 
 .modal-confirm-btn, .modal-cancel-btn {
     padding: 10px 20px;
-    margin: 10px 5px 0 0; /* Adjust spacing around buttons */
+    margin: 10px 5px 0 0;
     border: none;
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
-    outline: none; /* Remove focus outline */
-    transition: background-color 0.2s; /* Smooth background transition */
+    outline: none;
+    transition: background-color 0.2s;
 }
 
 .modal-confirm-btn {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     color: white;
 }
 
 .modal-cancel-btn {
-    background-color: #f44336; /* Red */
+    background-color: #f44336;
     color: white;
-    text-decoration: none; /* Remove underline from links */
-    display: inline-block; /* Needed for <a> tags to properly apply padding and border-radius */
+    text-decoration: none;
+    display: inline-block;
 }
 
 .modal-confirm-btn:hover,
 .modal-cancel-btn:hover {
-    opacity: 0.8; /* Slight transparency on hover */
+    opacity: 0.8;
 }

@@ -17,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   @Autowired
   private UserRepository
-      userRepository; // Assume UserRepository is your interface to fetch user data
+      userRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

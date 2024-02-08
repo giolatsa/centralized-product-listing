@@ -24,6 +24,5 @@ public class Product {
   private LocalDateTime createDate;
   private LocalDateTime updateDate;
 
-  @Transient
-  private Boolean inCart;
+  @Transient private Boolean inCart;
 }

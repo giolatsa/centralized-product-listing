@@ -2,10 +2,8 @@ package com.epam.centralized.product.listing.model;
 
 import com.epam.centralized.product.listing.model.enums.CartStatus;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,5 +33,5 @@ public class Cart {
 
   private LocalDateTime createDate;
 
-    private LocalDateTime updateDate;
+  private LocalDateTime updateDate;
 }

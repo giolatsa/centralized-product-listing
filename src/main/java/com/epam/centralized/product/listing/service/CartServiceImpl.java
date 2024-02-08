@@ -9,86 +9,97 @@ import com.epam.centralized.product.listing.repository.CartRepository;
 import com.epam.centralized.product.listing.repository.OrderRepository;
 import com.epam.centralized.product.listing.repository.ProductRepository;
 import com.epam.centralized.product.listing.repository.UserRepository;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
-public class CartServiceImpl implements CartService{
+public class CartServiceImpl implements CartService {
 
-    private final CartRepository cartRepository;
+  private final CartRepository cartRepository;
 
-    private final ProductRepository productRepository;
+  private final ProductRepository productRepository;
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    private final OrderRepository orderRepository;
+  private final OrderRepository orderRepository;
 
+  public CartServiceImpl(
+      CartRepository cartRepository,
+      ProductRepository productRepository,
+      UserRepository userRepository,
+      OrderRepository orderRepository) {
+    this.cartRepository = cartRepository;
+    this.productRepository = productRepository;
+    this.userRepository = userRepository;
+    this.orderRepository = orderRepository;
+  }
 
-    public CartServiceImpl(CartRepository cartRepository, ProductRepository productRepository, UserRepository userRepository, OrderRepository orderRepository) {
-        this.cartRepository = cartRepository;
-        this.productRepository = productRepository;
-        this.userRepository = userRepository;
-        this.orderRepository = orderRepository;
-    }
+  @Override
+  public void addProductToCart(String username, Long productId) {
+    User user =
+        userRepository
+            .findByEmail(username)
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
+    Product product =
+        productRepository
+            .findById(productId)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
 
-    @Override
-    public void addProductToCart(String username, Long productId) {
-        User user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User not found"));
-
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
-
-        cartRepository.findByUserEmailAndCartStatus(username,CartStatus.ACTIVE).ifPresentOrElse(
-                //if cart is present, add product to cart
+    cartRepository
+        .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
+        .ifPresentOrElse(
+            // if cart is present, add product to cart
             cart -> {
-                cart.getProducts().add(product);
-                cart.setUpdateDate(LocalDateTime.now());
-                cartRepository.save(cart);
+              cart.getProducts().add(product);
+              cart.setUpdateDate(LocalDateTime.now());
+              cartRepository.save(cart);
             },
-                //if cart is not present, create a new cart and add product to cart
+            // if cart is not present, create a new cart and add product to cart
             () -> {
-                Cart cart = Cart.builder()
-                        .cartStatus(CartStatus.ACTIVE)
-                        .products(List.of(product))
-                        .user(user)
-                        .createDate(LocalDateTime.now())
-                        .build();
-                cartRepository.save(cart);
-            }
-        );
+              Cart cart =
+                  Cart.builder()
+                      .cartStatus(CartStatus.ACTIVE)
+                      .products(List.of(product))
+                      .user(user)
+                      .createDate(LocalDateTime.now())
+                      .build();
+              cartRepository.save(cart);
+            });
+  }
 
+  @Override
+  public void removeProductFromCart(String username, Long productId) {
+    Cart cart =
+        cartRepository
+            .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
+            .orElseThrow(() -> new RuntimeException("Cart not found"));
 
+    Product product =
+        productRepository
+            .findById(productId)
+            .orElseThrow(() -> new RuntimeException("Product not found"));
 
-    }
+    cart.getProducts().remove(product);
+    cart.setUpdateDate(LocalDateTime.now());
+    cartRepository.save(cart);
+  }
 
-    @Override
-    public void removeProductFromCart(String username, Long productId) {
-        Cart cart = cartRepository.findByUserEmailAndCartStatus(username, CartStatus.ACTIVE).orElseThrow(() -> new RuntimeException("Cart not found"));
+  @Override
+  public void checkout(String username) {
+    Cart cart =
+        cartRepository
+            .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
+            .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+    cart.setCartStatus(CartStatus.BOUGHT);
+    cart.setUpdateDate(LocalDateTime.now());
+    cartRepository.save(cart);
 
-        cart.getProducts().remove(product);
-        cart.setUpdateDate(LocalDateTime.now());
-        cartRepository.save(cart);
+    Order order =
+        Order.builder().user(cart.getUser()).cart(cart).createDate(LocalDateTime.now()).build();
 
-    }
-
-    @Override
-    public void checkout(String username) {
-        Cart cart = cartRepository.findByUserEmailAndCartStatus(username, CartStatus.ACTIVE).orElseThrow(() -> new RuntimeException("Cart not found"));
-
-        cart.setCartStatus(CartStatus.BOUGHT);
-        cart.setUpdateDate(LocalDateTime.now());
-        cartRepository.save(cart);
-
-        Order order = Order.builder()
-                .user(cart.getUser())
-                .cart(cart)
-                .createDate(LocalDateTime.now())
-                .build();
-
-        orderRepository.save(order);
-    }
+    orderRepository.save(order);
+  }
 }
