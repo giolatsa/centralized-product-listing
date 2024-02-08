@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>MarketBridge</title>
+  <link href="/style.css" rel="stylesheet">
+
+
+</head>
+<body>
+<header class="header">
+  <div class="logo-container">
+    <a th:href="@{/home}">
+      <img alt="Logo" class="logo" src="/icons/logo.png">
+    </a>
+    <span class="website-name">MarketBridge.com</span>
+  </div>
+  <form action="/home/search" method="get">
+    <div class="search-bar">
+      <input name="query" id="search-bar" placeholder="Search..." type="text">
+      <button type="submit">Search</button>
+    </div>
+  </form>
+  <div class="icons">
+    <a th:href="@{/cart}">
+      <img alt="Cart" class="icon" src="/icons/cart-large-2-svgrepo-com.png">
+    </a>
+
+
+    <a th:href="@{/profile}">
+      <img alt="My Profile" class="icon" src="/icons/profile-circle-svgrepo-com.png">
+    </a>
+  </div>
+</header>
+
+
+<div class="profile-container">
+  <aside class="profile-sidebar">
+    <div class="profile-info">
+      <img th:src="@{${user.profileImageUrl}}" alt="Profile Picture" class="profile-picture">
+      <h2 th:text="${user.firstName +' '+ user.lastName}"></h2>
+    </div>
+    <ul class="profile-actions">
+      <li><a href="#my-orders">My Orders</a></li>
+      <li><a th:href="@{/profile}">My Details</a></li>
+      <li><a href="#change-password">Change Password</a></li>
+    </ul>
+  </aside>
+
+
+  <form action="@{/updateProfile}" th:action="@{/profile/update}" th:object="${user}" method="post" class="profile-details">
+    <!-- Hidden fields for data not displayed in the form -->
+    <input type="hidden"  th:field="${user.id}">
+    <input type="hidden"  th:field="${user.password}">
+    <input type="hidden"  th:field="${user.registerDate}">
+    <input type="hidden"  th:field="${user.updateDate}">
+    <input type="hidden"  th:field="${user.userStatus}">
+    <input type="hidden"  th:field="${user.userRole}">
+    <input type="hidden"  th:field="${user.profileImageUrl}">
+
+    <section >
+      <div class="detail-row">
+        <div class="detail">
+          <label for="first-name">First Name</label>
+          <input type="text" id="first-name" th:field="${user.firstName}">
+        </div>
+        <div class="detail">
+          <label for="last-name">Last Name</label>
+          <input type="text" id="last-name" th:field="${user.lastName}">
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail">
+          <label for="mobile">Mobile</label>
+          <input type="text" id="mobile" th:field="${user.mobile}">
+        </div>
+        <div class="detail">
+          <label for="email">Email</label>
+          <input type="email" id="email" th:field="${user.email}">
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail">
+          <label for="gender">Gender</label>
+          <input type="text" id="gender" th:field="${user.gender}">
+        </div>
+        <div class="detail">
+          <label for="dob">Date of Birth</label>
+          <input type="text" id="dob" th:field="${user.dateOfBirth}">
+        </div>
+      </div>
+      <div class="detail-row">
+        <button type="submit" class="save-btn">Save</button>
+      </div>
+    </section>
+  </form>
+
+
+
+</div>
+
+
+
+
+<footer class="site-footer">
+  <div class="footer-column footer-logo">
+    <img alt="Logo" class="footer-logo-image" src="/icons/logo.png">
+    <span class="website-name">MarketBridge.com</span>
+  </div>
+  <div class="footer-column footer-links">
+    <ul>
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#team">Our Team</a></li>
+      <li><a href="#blog">Blog</a></li>
+    </ul>
+  </div>
+  <div class="footer-column footer-contact">
+    <p>Contact Us</p>
+    <p>Phone Number: +1234567890</p>
+    <p>Email: contact@marketbridge.com</p>
+    <p>Address: 123 Main St, City, Country</p>
+    <div class="social-icons">
+      <a href="https://www.facebook.com"><img alt="Facebook" class="social-icon" src="/icons/facebook.png"></a>
+      <a href="https://www.instagram.com"><img alt="Instagram" class="social-icon" src="/icons/instagram (1).png"></a>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>

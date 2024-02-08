@@ -498,3 +498,20 @@ body {
 .modal-cancel-btn:hover {
     opacity: 0.8;
 }
+
+
+
+.save-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+.save-btn:hover {
+    background-color: #45a049;
+}

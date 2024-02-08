@@ -16,10 +16,16 @@ public class User {
 
   private String firstName;
   private String lastName;
+  private String mobile;
   private String email;
+  private String gender;
   private String password;
+  private String dateOfBirth;
   private UserStatus userStatus;
   private UserRole userRole;
+
+  private String profileImageUrl;
+
   private LocalDateTime registerDate;
   private LocalDateTime updateDate;
 }
