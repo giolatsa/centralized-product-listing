@@ -2,9 +2,9 @@ package com.epam.centralized.product.listing.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,8 +14,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return NoOpPasswordEncoder.getInstance();
+  public PasswordEncoder passwordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
+    return bCryptPasswordEncoder;
+  }
+
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
   @Bean
@@ -23,16 +28,20 @@ public class SecurityConfig {
     http.authorizeHttpRequests(
             (authorize) ->
                 authorize
-                    .requestMatchers("style.css")
-                    .permitAll()
-                    .requestMatchers("static/**")
-                    .permitAll()
-                    .requestMatchers("icons/**")
+                    .requestMatchers("style.css", "/register", "/login", "static/**", "icons/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
-        .formLogin(Customizer.withDefaults())
-        .logout(Customizer.withDefaults());
+        .formLogin((form) -> form.loginPage("/login").permitAll())
+        .logout(
+            (logout) ->
+                logout
+                    .logoutUrl(
+                        "/logout") // Specify the logout URL if different from the default "/logout"
+                    .logoutSuccessUrl("/login?logout") // Specify a URL to redirect to after logout
+                    .invalidateHttpSession(true) // Invalidate session after logout
+                    .deleteCookies("JSESSIONID") // Delete session cookie
+                    .permitAll());
 
     return http.build();
   }
