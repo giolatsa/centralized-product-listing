@@ -317,7 +317,6 @@ body {
     justify-content: space-between;
     padding: 20px;
     font-size: 14px;
-    margin-top: auto;
 }
 
 .footer-column {
@@ -381,7 +380,9 @@ body {
 
 .profile-container {
     display: flex;
-    height: 100%;
+    flex-direction: row;
+    flex: 1;
+    min-height: 0;
 }
 
 .profile-sidebar {
@@ -881,4 +882,10 @@ body {
 
 .company-products .add-product-btn:hover {
     background-color: #0056b3;
+}
+
+.main-content-profile{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
