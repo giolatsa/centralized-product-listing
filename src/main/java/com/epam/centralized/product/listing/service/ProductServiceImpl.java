@@ -115,6 +115,7 @@ public class ProductServiceImpl implements ProductService {
       throw new RuntimeException("User is not the owner of the product");
     }
     product.setProductStatus(ProductStatus.DISABLED);
+    product.setUpdateDate(LocalDateTime.now());
 
     productRepository.save(product);
 
