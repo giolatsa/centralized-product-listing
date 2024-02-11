@@ -889,3 +889,75 @@ body {
     flex-direction: column;
     flex: 1;
 }
+
+#addProductModal .modal-content {
+    background-color: #fff;
+    margin-left: 40%;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Close Button */
+#addProductModal .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#addProductModal .close:hover {
+    color: #000;
+}
+
+/* Form Group Styling */
+#addProductModal .form-group {
+    margin-bottom: 15px;
+}
+
+#addProductModal .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#addProductModal .form-group input[type="text"],
+#addProductModal .form-group input[type="number"],
+#addProductModal .form-group select,
+#addProductModal .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#addProductModal .submit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#addProductModal .submit-btn:hover {
+    background-color: #0056b3;
+}
+
+#addProductModal .cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#addProductModal .cancel-btn:hover {
+    background-color: #565e64;
+}

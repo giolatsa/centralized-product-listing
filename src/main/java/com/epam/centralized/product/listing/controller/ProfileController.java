@@ -148,4 +148,40 @@ public class ProfileController {
     redirectAttributes.addFlashAttribute("success", "Password successfully changed.");
     return "redirect:/profile";
   }
+
+  @GetMapping("/product/add")
+  public String showAddProductModal(Model model,Principal principal) {
+
+    Company company = companyService.findByUserEmail(principal.getName());
+    User userDetails = userService.findByEmail(principal.getName());
+
+    Boolean hasCompany = companyService.userHasCompany(userDetails.getId());
+
+    List<Product> products = productService.findAllProductsByCompany(company);
+    model.addAttribute("products", products);
+
+    model.addAttribute("hasCompany", hasCompany);
+
+    model.addAttribute("company", company);
+    model.addAttribute("section", "company");
+    model.addAttribute("user", userDetails);
+    model.addAttribute("showAddProductModal", true);
+    model.addAttribute("productCategories", productService.findAllProductCategories());
+    return "profile";
+  }
+
+  @PostMapping("/product/add")
+    public String addProduct(
+        @ModelAttribute Product product,
+        Principal principal) {
+        productService.createProduct(product, principal.getName());
+        return "redirect:/profile/company";
+    }
+    @PostMapping("/product/delete")
+    public String deleteProduct(
+        @RequestParam("productId") Long productId,Principal principal) {
+        String username = principal.getName();
+        productService.deleteProduct(productId,username);
+        return "redirect:/profile/company";
+    }
 }
