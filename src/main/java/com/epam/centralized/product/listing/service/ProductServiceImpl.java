@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
             .toList();
 
     markProductsInCart(username, finalFilteredProducts);
-    return filteredProducts.stream()
+    return finalFilteredProducts.stream()
         .sorted((p1, p2) -> p2.getCreateDate().compareTo(p1.getCreateDate()))
         .toList();
   }
