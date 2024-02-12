@@ -19,7 +19,7 @@ public interface ProductService {
 
   List<ProductCategory> findAllProductCategories();
 
-    Product createProduct(Product product, String username);
+  Product createProduct(Product product, String username);
 
   void deleteProduct(Long productId, String username);
 }

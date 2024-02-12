@@ -86,7 +86,9 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public List<Product> findAllProductsByCompany(Company company) {
-    return productRepository.findAllByCompany(company).stream().sorted((p1, p2) -> p2.getCreateDate().compareTo(p1.getCreateDate())).toList();
+    return productRepository.findAllByCompany(company).stream()
+        .sorted((p1, p2) -> p2.getCreateDate().compareTo(p1.getCreateDate()))
+        .toList();
   }
 
   @Override

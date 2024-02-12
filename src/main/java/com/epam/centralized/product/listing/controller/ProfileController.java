@@ -150,7 +150,7 @@ public class ProfileController {
   }
 
   @GetMapping("/product/add")
-  public String showAddProductModal(Model model,Principal principal) {
+  public String showAddProductModal(Model model, Principal principal) {
 
     Company company = companyService.findByUserEmail(principal.getName());
     User userDetails = userService.findByEmail(principal.getName());
@@ -171,17 +171,15 @@ public class ProfileController {
   }
 
   @PostMapping("/product/add")
-    public String addProduct(
-        @ModelAttribute Product product,
-        Principal principal) {
-        productService.createProduct(product, principal.getName());
-        return "redirect:/profile/company";
-    }
-    @PostMapping("/product/delete")
-    public String deleteProduct(
-        @RequestParam("productId") Long productId,Principal principal) {
-        String username = principal.getName();
-        productService.deleteProduct(productId,username);
-        return "redirect:/profile/company";
-    }
+  public String addProduct(@ModelAttribute Product product, Principal principal) {
+    productService.createProduct(product, principal.getName());
+    return "redirect:/profile/company";
+  }
+
+  @PostMapping("/product/delete")
+  public String deleteProduct(@RequestParam("productId") Long productId, Principal principal) {
+    String username = principal.getName();
+    productService.deleteProduct(productId, username);
+    return "redirect:/profile/company";
+  }
 }
