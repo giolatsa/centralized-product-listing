@@ -146,11 +146,7 @@ public class ProductServiceImpl implements ProductService {
               // if cart is present, mark products in cart
               List<Product> productsInCart = cart.getProducts();
               products.forEach(
-                  p -> {
-                    if (productsInCart.contains(p)) {
-                      p.setInCart(true);
-                    }
-                  });
+                  p -> p.setInCart(productsInCart.contains(p)));
             },
             // if cart is not present, mark all products as not in cart
             () -> products.forEach(p -> p.setInCart(false)));
