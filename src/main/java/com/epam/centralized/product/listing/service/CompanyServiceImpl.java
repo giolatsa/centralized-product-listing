@@ -1,5 +1,6 @@
 package com.epam.centralized.product.listing.service;
 
+import com.epam.centralized.product.listing.exception.UserNotFoundException;
 import com.epam.centralized.product.listing.model.Company;
 import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.model.enums.CompanyStatus;
@@ -24,7 +25,7 @@ public class CompanyServiceImpl implements CompanyService {
     User user =
         userRepository
             .findByEmail(username)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
 
     company.setUser(user);
     company.setCompanyStatus(CompanyStatus.ACTIVE);
@@ -47,14 +48,18 @@ public class CompanyServiceImpl implements CompanyService {
   @Override
   public Company findByUserEmail(String email) {
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
     return companyRepository.findByUserId(user.getId()).orElse(null);
   }
 
   @Override
   public Company updateCompany(Company company, String email) {
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
 
     return companyRepository.save(company);
   }

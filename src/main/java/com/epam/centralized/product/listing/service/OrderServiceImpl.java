@@ -1,5 +1,6 @@
 package com.epam.centralized.product.listing.service;
 
+import com.epam.centralized.product.listing.exception.UserNotFoundException;
 import com.epam.centralized.product.listing.model.Order;
 import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.repository.OrderRepository;
@@ -20,7 +21,9 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public List<Order> findAllOrdersByUserEmail(String email) {
     User user =
-        userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
 
     return orderRepository.findAllByUser(user);
   }

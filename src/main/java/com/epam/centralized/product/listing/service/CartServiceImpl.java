@@ -1,5 +1,8 @@
 package com.epam.centralized.product.listing.service;
 
+import com.epam.centralized.product.listing.exception.CartNotFoundException;
+import com.epam.centralized.product.listing.exception.ProductNotFoundException;
+import com.epam.centralized.product.listing.exception.UserNotFoundException;
 import com.epam.centralized.product.listing.model.Cart;
 import com.epam.centralized.product.listing.model.Order;
 import com.epam.centralized.product.listing.model.Product;
@@ -32,12 +35,12 @@ public class CartServiceImpl implements CartService {
     User user =
         userRepository
             .findByEmail(username)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
 
     Product product =
         productRepository
             .findById(productId)
-            .orElseThrow(() -> new RuntimeException("Product not found"));
+            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
     cartRepository
         .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
@@ -66,12 +69,12 @@ public class CartServiceImpl implements CartService {
     Cart cart =
         cartRepository
             .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
-            .orElseThrow(() -> new RuntimeException("Cart not found"));
+            .orElseThrow(() -> new CartNotFoundException("Cart not found"));
 
     Product product =
         productRepository
             .findById(productId)
-            .orElseThrow(() -> new RuntimeException("Product not found"));
+            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
     cart.getProducts().remove(product);
     cart.setUpdateDate(LocalDateTime.now());
@@ -84,7 +87,7 @@ public class CartServiceImpl implements CartService {
     Cart cart =
         cartRepository
             .findByUserEmailAndCartStatus(username, CartStatus.ACTIVE)
-            .orElseThrow(() -> new RuntimeException("Cart not found"));
+            .orElseThrow(() -> new CartNotFoundException("Cart not found"));
     // set cart status to bought and update date
     cart.setCartStatus(CartStatus.BOUGHT);
     cart.setUpdateDate(LocalDateTime.now());

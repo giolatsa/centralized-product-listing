@@ -1,5 +1,6 @@
 package com.epam.centralized.product.listing.service;
 
+import com.epam.centralized.product.listing.exception.UserNotFoundException;
 import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.model.enums.UserRole;
 import com.epam.centralized.product.listing.model.enums.UserStatus;
@@ -22,12 +23,12 @@ public class UserServiceImpl implements UserService {
   public User findByEmail(String email) {
     return userRepository
         .findByEmail(email)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+        .orElseThrow(() -> new UserNotFoundException("User not found"));
   }
 
   @Override
   public User updateUserById(User user, Long id) {
-    userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     return userRepository.save(user);
   }
 

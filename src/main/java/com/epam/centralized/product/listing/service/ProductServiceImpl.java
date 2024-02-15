@@ -1,5 +1,9 @@
 package com.epam.centralized.product.listing.service;
 
+import com.epam.centralized.product.listing.exception.CompanyNotFoundException;
+import com.epam.centralized.product.listing.exception.NotProductOwnerException;
+import com.epam.centralized.product.listing.exception.ProductNotFoundException;
+import com.epam.centralized.product.listing.exception.UserNotFoundException;
 import com.epam.centralized.product.listing.model.*;
 import com.epam.centralized.product.listing.model.enums.CartStatus;
 import com.epam.centralized.product.listing.model.enums.ProductStatus;
@@ -92,12 +96,12 @@ public class ProductServiceImpl implements ProductService {
     User user =
         userRepository
             .findByEmail(username)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
 
     Company company =
         companyRepository
             .findByUser(user)
-            .orElseThrow(() -> new RuntimeException("Company not found"));
+            .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
     product.setCompany(company);
     product.setProductStatus(ProductStatus.ACTIVE);
@@ -112,15 +116,15 @@ public class ProductServiceImpl implements ProductService {
     User user =
         userRepository
             .findByEmail(username)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
 
     Product product =
         productRepository
             .findById(productId)
-            .orElseThrow(() -> new RuntimeException("Product not found"));
+            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
     if (!product.getCompany().getUser().equals(user)) {
-      throw new RuntimeException("User is not the owner of the product");
+      throw new NotProductOwnerException("User is not the owner of the product");
     }
     product.setProductStatus(ProductStatus.DISABLED);
     product.setUpdateDate(LocalDateTime.now());
