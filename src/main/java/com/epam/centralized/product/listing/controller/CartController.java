@@ -38,8 +38,6 @@ public class CartController {
     model.addAttribute("productCount", products.size());
     model.addAttribute("showCheckoutModal", showCheckoutModal);
 
-    System.out.println(showCheckoutModal);
-
     return "cart";
   }
 

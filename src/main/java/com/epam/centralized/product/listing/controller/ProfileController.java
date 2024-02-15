@@ -48,8 +48,6 @@ public class ProfileController {
   @PostMapping("/update")
   public String updateProfile(@ModelAttribute User user, Principal principal, Model model) {
 
-    System.out.println(user);
-
     User userDetails = userService.updateUserById(user, user.getId());
 
     Boolean hasCompany = companyService.userHasCompany(userDetails.getId());
