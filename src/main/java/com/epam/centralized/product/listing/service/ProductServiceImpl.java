@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,42 +32,32 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public List<Product> getAllProducts(String username) {
-    List<Product> allProducts = productRepository.findAllByProductStatus(ProductStatus.ACTIVE);
+    List<Product> allProducts = productRepository.findAllByProductStatusOrderByCreateDateDesc(ProductStatus.ACTIVE);
 
     markProductsInCart(username, allProducts);
-    return allProducts.stream()
-        .sorted((p1, p2) -> p2.getCreateDate().compareTo(p1.getCreateDate()))
-        .toList();
+    return allProducts;
   }
 
   @Override
   public List<Product> getProductsByCategory(String categoryName, String username) {
-    List<Product> productsByCategory =
-        productRepository.findByProductCategoryCategoryNameAndProductStatus(
-            categoryName, ProductStatus.ACTIVE);
+    // Fetch and sort by createDate in descending order directly from the database
+    List<Product> productsByCategory = productRepository.findByProductCategoryCategoryNameAndProductStatusOrderByCreateDateDesc(categoryName, ProductStatus.ACTIVE);
+
     markProductsInCart(username, productsByCategory);
-    return productsByCategory.stream()
-        .sorted((p1, p2) -> p2.getCreateDate().compareTo(p1.getCreateDate()))
-        .toList();
+
+    return productsByCategory;
   }
 
   @Override
   public List<Product> searchProductsByNameOrDescription(String query, String username) {
-    List<Product> filteredProducts = productRepository.findAll();
+    // Define sorting
+    Sort sort = Sort.by(Sort.Direction.DESC, "createDate");
 
-    // filter products by query
-    List<Product> finalFilteredProducts =
-        filteredProducts.stream()
-            .filter(
-                p ->
-                    p.getName().toLowerCase().contains(query.toLowerCase())
-                        || p.getDescription().toLowerCase().contains(query.toLowerCase()))
-            .toList();
+    // filter and sort on the database side
+    List<Product> filteredProducts = productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query, sort);
 
-    markProductsInCart(username, finalFilteredProducts);
-    return finalFilteredProducts.stream()
-        .sorted((p1, p2) -> p2.getCreateDate().compareTo(p1.getCreateDate()))
-        .toList();
+    markProductsInCart(username, filteredProducts);
+    return filteredProducts;
   }
 
   @Override
@@ -81,9 +72,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public List<Product> findAllProductsByCompany(Company company) {
-    return productRepository.findAllByCompany(company).stream()
-        .sorted((p1, p2) -> p2.getCreateDate().compareTo(p1.getCreateDate()))
-        .toList();
+    return productRepository.findAllByCompanyOrderByCreateDateDesc(company);
   }
 
   @Override
