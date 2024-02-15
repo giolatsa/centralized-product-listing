@@ -5,19 +5,18 @@ import com.epam.centralized.product.listing.model.enums.UserRole;
 import com.epam.centralized.product.listing.model.enums.UserStatus;
 import com.epam.centralized.product.listing.repository.UserRepository;
 import java.time.LocalDateTime;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
 
   private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
-  public UserServiceImpl(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
 
   @Override
   public User findByEmail(String email) {

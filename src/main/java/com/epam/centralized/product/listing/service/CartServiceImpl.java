@@ -11,9 +11,12 @@ import com.epam.centralized.product.listing.repository.ProductRepository;
 import com.epam.centralized.product.listing.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
   private final CartRepository cartRepository;
@@ -23,17 +26,6 @@ public class CartServiceImpl implements CartService {
   private final UserRepository userRepository;
 
   private final OrderRepository orderRepository;
-
-  public CartServiceImpl(
-      CartRepository cartRepository,
-      ProductRepository productRepository,
-      UserRepository userRepository,
-      OrderRepository orderRepository) {
-    this.cartRepository = cartRepository;
-    this.productRepository = productRepository;
-    this.userRepository = userRepository;
-    this.orderRepository = orderRepository;
-  }
 
   @Override
   public void addProductToCart(String username, Long productId) {

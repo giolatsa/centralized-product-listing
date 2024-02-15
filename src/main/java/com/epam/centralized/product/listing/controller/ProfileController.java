@@ -10,12 +10,15 @@ import com.epam.centralized.product.listing.service.ProductService;
 import com.epam.centralized.product.listing.service.UserService;
 import java.security.Principal;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/profile")
 public class ProfileController {
 
@@ -26,17 +29,6 @@ public class ProfileController {
   private final CompanyService companyService;
 
   private final ProductService productService;
-
-  public ProfileController(
-      UserService userService,
-      OrderService orderService,
-      CompanyService companyService,
-      ProductService productService) {
-    this.userService = userService;
-    this.orderService = orderService;
-    this.companyService = companyService;
-    this.productService = productService;
-  }
 
   @GetMapping
   public String profile(Principal principal, Model model) {

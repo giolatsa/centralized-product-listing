@@ -2,18 +2,16 @@ package com.epam.centralized.product.listing.controller;
 
 import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthController {
 
   private final UserService userService;
-
-  public AuthController(UserService userService) {
-    this.userService = userService;
-  }
 
   @GetMapping("/login")
   public String login() {

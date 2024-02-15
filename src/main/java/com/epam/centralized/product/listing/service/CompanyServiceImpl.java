@@ -7,19 +7,17 @@ import com.epam.centralized.product.listing.model.enums.UserRole;
 import com.epam.centralized.product.listing.repository.CompanyRepository;
 import com.epam.centralized.product.listing.repository.UserRepository;
 import java.time.LocalDateTime;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
 
   private final CompanyRepository companyRepository;
 
   private final UserRepository userRepository;
-
-  public CompanyServiceImpl(CompanyRepository companyRepository, UserRepository userRepository) {
-    this.companyRepository = companyRepository;
-    this.userRepository = userRepository;
-  }
 
   @Override
   public Company createCompany(Company company, String username) {

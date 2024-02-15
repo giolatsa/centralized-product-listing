@@ -6,9 +6,12 @@ import com.epam.centralized.product.listing.model.enums.ProductStatus;
 import com.epam.centralized.product.listing.repository.*;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
@@ -20,19 +23,6 @@ public class ProductServiceImpl implements ProductService {
   private final UserRepository userRepository;
 
   private final CompanyRepository companyRepository;
-
-  public ProductServiceImpl(
-      ProductRepository productRepository,
-      CartRepository cartRepository,
-      ProductCategoryRepository productCategoryRepository,
-      UserRepository userRepository,
-      CompanyRepository companyRepository) {
-    this.productRepository = productRepository;
-    this.cartRepository = cartRepository;
-    this.productCategoryRepository = productCategoryRepository;
-    this.userRepository = userRepository;
-    this.companyRepository = companyRepository;
-  }
 
   @Override
   public List<Product> getAllProducts(String username) {

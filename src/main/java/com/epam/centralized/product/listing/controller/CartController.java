@@ -5,6 +5,8 @@ import com.epam.centralized.product.listing.service.CartService;
 import com.epam.centralized.product.listing.service.ProductService;
 import java.security.Principal;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/cart")
 public class CartController {
 
   private final CartService cartService;
 
   private final ProductService productService;
-
-  public CartController(CartService cartService, ProductService productService) {
-    this.cartService = cartService;
-    this.productService = productService;
-  }
 
   @GetMapping
   public String cart(
