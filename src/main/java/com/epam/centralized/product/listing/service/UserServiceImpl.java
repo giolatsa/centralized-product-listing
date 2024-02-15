@@ -6,7 +6,6 @@ import com.epam.centralized.product.listing.model.enums.UserRole;
 import com.epam.centralized.product.listing.model.enums.UserStatus;
 import com.epam.centralized.product.listing.repository.UserRepository;
 import java.time.LocalDateTime;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

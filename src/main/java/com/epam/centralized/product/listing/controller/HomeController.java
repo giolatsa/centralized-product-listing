@@ -5,7 +5,6 @@ import com.epam.centralized.product.listing.service.ProductCategoryService;
 import com.epam.centralized.product.listing.service.ProductService;
 import java.security.Principal;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +20,6 @@ public class HomeController {
   private final ProductService productService;
 
   private final ProductCategoryService categoryService;
-
 
   @GetMapping
   public String homePage(Model model, Principal principal) {

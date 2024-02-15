@@ -10,7 +10,6 @@ import com.epam.centralized.product.listing.model.enums.ProductStatus;
 import com.epam.centralized.product.listing.repository.*;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,8 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public List<Product> getAllProducts(String username) {
-    List<Product> allProducts = productRepository.findAllByProductStatusOrderByCreateDateDesc(ProductStatus.ACTIVE);
+    List<Product> allProducts =
+        productRepository.findAllByProductStatusOrderByCreateDateDesc(ProductStatus.ACTIVE);
 
     markProductsInCart(username, allProducts);
     return allProducts;
@@ -41,7 +41,9 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public List<Product> getProductsByCategory(String categoryName, String username) {
     // Fetch and sort by createDate in descending order directly from the database
-    List<Product> productsByCategory = productRepository.findByProductCategoryCategoryNameAndProductStatusOrderByCreateDateDesc(categoryName, ProductStatus.ACTIVE);
+    List<Product> productsByCategory =
+        productRepository.findByProductCategoryCategoryNameAndProductStatusOrderByCreateDateDesc(
+            categoryName, ProductStatus.ACTIVE);
 
     markProductsInCart(username, productsByCategory);
 
@@ -54,7 +56,9 @@ public class ProductServiceImpl implements ProductService {
     Sort sort = Sort.by(Sort.Direction.DESC, "createDate");
 
     // filter and sort on the database side
-    List<Product> filteredProducts = productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query, sort);
+    List<Product> filteredProducts =
+        productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+            query, query, sort);
 
     markProductsInCart(username, filteredProducts);
     return filteredProducts;
@@ -131,8 +135,7 @@ public class ProductServiceImpl implements ProductService {
             cart -> {
               // if cart is present, mark products in cart
               List<Product> productsInCart = cart.getProducts();
-              products.forEach(
-                  p -> p.setInCart(productsInCart.contains(p)));
+              products.forEach(p -> p.setInCart(productsInCart.contains(p)));
             },
             // if cart is not present, mark all products as not in cart
             () -> products.forEach(p -> p.setInCart(false)));

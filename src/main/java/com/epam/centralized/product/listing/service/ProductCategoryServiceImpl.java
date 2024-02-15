@@ -3,7 +3,6 @@ package com.epam.centralized.product.listing.service;
 import com.epam.centralized.product.listing.model.ProductCategory;
 import com.epam.centralized.product.listing.repository.ProductCategoryRepository;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

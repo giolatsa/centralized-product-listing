@@ -9,7 +9,6 @@ import com.epam.centralized.product.listing.repository.CompanyRepository;
 import com.epam.centralized.product.listing.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,7 +63,7 @@ public class CompanyServiceImpl implements CompanyService {
         userRepository
             .findByEmail(email)
             .orElseThrow(() -> new UserNotFoundException("User not found"));
-    //Updates the company name and email /profile/company
+    // Updates the company name and email /profile/company
     return companyRepository.save(company);
   }
 }

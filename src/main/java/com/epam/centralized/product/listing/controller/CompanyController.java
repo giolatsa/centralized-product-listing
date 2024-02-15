@@ -3,7 +3,6 @@ package com.epam.centralized.product.listing.controller;
 import com.epam.centralized.product.listing.model.Company;
 import com.epam.centralized.product.listing.service.CompanyService;
 import java.security.Principal;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

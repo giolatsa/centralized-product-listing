@@ -6,7 +6,6 @@ import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.repository.OrderRepository;
 import com.epam.centralized.product.listing.repository.UserRepository;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
