@@ -3,6 +3,7 @@ package com.epam.centralized.product.listing.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.epam.centralized.product.listing.exception.CompanyNotFoundException;
 import com.epam.centralized.product.listing.model.Company;
 import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.model.enums.CompanyStatus;
@@ -75,7 +76,8 @@ class CompanyServiceImplTest {
     when(companyRepository.findByUserId(user.getId())).thenReturn(Optional.of(company));
 
     // Act
-    Company foundCompany = companyService.findByUserEmail(email);
+    Company foundCompany =
+        companyService.findByUserEmail(email).orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
     // Assert
     assertNotNull(foundCompany);

@@ -8,6 +8,7 @@ import com.epam.centralized.product.listing.model.enums.UserRole;
 import com.epam.centralized.product.listing.repository.CompanyRepository;
 import com.epam.centralized.product.listing.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,12 +49,12 @@ public class CompanyServiceImpl implements CompanyService {
   }
 
   @Override
-  public Company findByUserEmail(String email) {
+  public Optional<Company> findByUserEmail(String email) {
     User user =
         userRepository
             .findByEmail(email)
             .orElseThrow(() -> new UserNotFoundException("User not found"));
-    return companyRepository.findByUserId(user.getId()).orElse(null);
+    return companyRepository.findByUserId(user.getId());
   }
 
   @Override

@@ -1,5 +1,6 @@
 package com.epam.centralized.product.listing.controller;
 
+import com.epam.centralized.product.listing.exception.CompanyNotFoundException;
 import com.epam.centralized.product.listing.model.Company;
 import com.epam.centralized.product.listing.model.Order;
 import com.epam.centralized.product.listing.model.Product;
@@ -10,7 +11,6 @@ import com.epam.centralized.product.listing.service.ProductService;
 import com.epam.centralized.product.listing.service.UserService;
 import java.security.Principal;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,7 +79,11 @@ public class ProfileController {
 
   @GetMapping("/company")
   public String getCompanyDetails(Principal principal, Model model) {
-    Company company = companyService.findByUserEmail(principal.getName());
+    Company company =
+        companyService
+            .findByUserEmail(principal.getName())
+            .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+
     User userDetails = userService.findByEmail(principal.getName());
 
     Boolean hasCompany = companyService.userHasCompany(userDetails.getId());
@@ -142,7 +146,10 @@ public class ProfileController {
   @GetMapping("/product/add")
   public String showAddProductModal(Model model, Principal principal) {
 
-    Company company = companyService.findByUserEmail(principal.getName());
+    Company company =
+        companyService
+            .findByUserEmail(principal.getName())
+            .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
     User userDetails = userService.findByEmail(principal.getName());
 
     Boolean hasCompany = companyService.userHasCompany(userDetails.getId());
