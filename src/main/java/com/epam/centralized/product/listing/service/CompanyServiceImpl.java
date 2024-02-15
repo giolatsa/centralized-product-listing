@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class CompanyServiceImpl implements CompanyService {
   private final UserRepository userRepository;
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public Company createCompany(Company company, String username) {
     User user =
         userRepository
@@ -55,12 +57,13 @@ public class CompanyServiceImpl implements CompanyService {
   }
 
   @Override
+  @Transactional
   public Company updateCompany(Company company, String email) {
     User user =
         userRepository
             .findByEmail(email)
             .orElseThrow(() -> new UserNotFoundException("User not found"));
-
+    //Updates the company name and email /profile/company
     return companyRepository.save(company);
   }
 }

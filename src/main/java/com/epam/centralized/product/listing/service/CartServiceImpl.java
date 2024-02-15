@@ -17,6 +17,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class CartServiceImpl implements CartService {
   private final OrderRepository orderRepository;
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public void addProductToCart(String username, Long productId) {
     User user =
         userRepository
@@ -65,6 +67,7 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public void removeProductFromCart(String username, Long productId) {
     Cart cart =
         cartRepository
@@ -82,6 +85,7 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public void checkout(String username) {
     // find user's active cart
     Cart cart =

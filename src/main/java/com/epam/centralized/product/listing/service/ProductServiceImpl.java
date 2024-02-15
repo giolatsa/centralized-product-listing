@@ -13,6 +13,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -92,6 +93,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public Product createProduct(Product product, String username) {
     User user =
         userRepository
@@ -111,8 +113,8 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public void deleteProduct(Long productId, String username) {
-    // make sure user is owner of the product
     User user =
         userRepository
             .findByEmail(username)
@@ -123,6 +125,7 @@ public class ProductServiceImpl implements ProductService {
             .findById(productId)
             .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
+    // make sure user is owner of the product
     if (!product.getCompany().getUser().equals(user)) {
       throw new NotProductOwnerException("User is not the owner of the product");
     }

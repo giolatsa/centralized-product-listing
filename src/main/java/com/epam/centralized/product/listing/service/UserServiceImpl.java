@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public User updateUserById(User user, Long id) {
     userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     return userRepository.save(user);
@@ -39,12 +41,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public void changeUserPassword(User user, String newPassword) {
     user.setPassword(bCryptPasswordEncoder.encode(newPassword));
     userRepository.save(user);
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public void createUser(User user) {
 
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
