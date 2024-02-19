@@ -8,6 +8,10 @@
 </head>
 <body>
 <div class="register-container">
+
+    <div class="error-message" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+
     <form th:action="@{/register/user}" method="post" class="register-form">
         <h2>Register</h2>
         <div class="form-group">

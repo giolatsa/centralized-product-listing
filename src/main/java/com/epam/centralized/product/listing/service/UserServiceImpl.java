@@ -1,5 +1,6 @@
 package com.epam.centralized.product.listing.service;
 
+import com.epam.centralized.product.listing.exception.UserNameUsedException;
 import com.epam.centralized.product.listing.exception.UserNotFoundException;
 import com.epam.centralized.product.listing.model.User;
 import com.epam.centralized.product.listing.model.enums.UserRole;
@@ -49,6 +50,13 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void createUser(User user) {
+    // check if username already exists
+    userRepository
+        .findByEmail(user.getEmail())
+        .ifPresent(
+            u -> {
+              throw new UserNameUsedException("User already exists by this email");
+            });
 
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     user.setUserRole(UserRole.CUSTOMER);
