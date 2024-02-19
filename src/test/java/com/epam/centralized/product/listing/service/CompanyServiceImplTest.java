@@ -77,7 +77,9 @@ class CompanyServiceImplTest {
 
     // Act
     Company foundCompany =
-        companyService.findByUserEmail(email).orElseThrow(() -> new CompanyNotFoundException("Company not found"));
+        companyService
+            .findByUserEmail(email)
+            .orElseThrow(() -> new CompanyNotFoundException("Company not found"));
 
     // Assert
     assertNotNull(foundCompany);

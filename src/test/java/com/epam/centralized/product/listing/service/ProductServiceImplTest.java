@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Sort;
 
 class ProductServiceImplTest {
 
@@ -45,7 +46,8 @@ class ProductServiceImplTest {
     product2.setCreateDate(LocalDateTime.of(2024, 1, 2, 0, 0));
 
     List<Product> products = List.of(product1, product2);
-    when(productRepository.findAllByProductStatus(ProductStatus.ACTIVE)).thenReturn(products);
+    when(productRepository.findAllByProductStatusOrderByCreateDateDesc(ProductStatus.ACTIVE))
+        .thenReturn(products);
 
     // Act
     List<Product> result = productService.getAllProducts(username);
@@ -53,10 +55,9 @@ class ProductServiceImplTest {
     // Assert
     assertNotNull(result);
     assertFalse(result.isEmpty());
-    verify(productRepository, times(1)).findAllByProductStatus(ProductStatus.ACTIVE);
+    verify(productRepository, times(1))
+        .findAllByProductStatusOrderByCreateDateDesc(ProductStatus.ACTIVE);
     assertEquals(2, result.size());
-    // make sure it got sorted by date desc
-    assertEquals(product2, result.get(0));
   }
 
   @Test
@@ -109,7 +110,7 @@ class ProductServiceImplTest {
     String categoryName = "Electronics";
     String username = "user@example.com";
     List<Product> products = List.of(new Product());
-    when(productRepository.findByProductCategoryCategoryNameAndProductStatus(
+    when(productRepository.findByProductCategoryCategoryNameAndProductStatusOrderByCreateDateDesc(
             eq(categoryName), eq(ProductStatus.ACTIVE)))
         .thenReturn(products);
 
@@ -120,7 +121,8 @@ class ProductServiceImplTest {
     assertNotNull(result);
     assertFalse(result.isEmpty());
     verify(productRepository, times(1))
-        .findByProductCategoryCategoryNameAndProductStatus(categoryName, ProductStatus.ACTIVE);
+        .findByProductCategoryCategoryNameAndProductStatusOrderByCreateDateDesc(
+            categoryName, ProductStatus.ACTIVE);
   }
 
   @Test
@@ -136,7 +138,11 @@ class ProductServiceImplTest {
     allProducts.get(1).setName("unrelated product");
     allProducts.get(1).setDescription("unrelated");
     allProducts.get(1).setCreateDate(LocalDateTime.now());
-    when(productRepository.findAll()).thenReturn(allProducts);
+    Sort sort = Sort.by(Sort.Direction.DESC, "createDate");
+
+    when(productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+            query, query, sort))
+        .thenReturn(List.of(allProducts.get(0)));
 
     // Act
     List<Product> result = productService.searchProductsByNameOrDescription(query, username);
@@ -145,7 +151,8 @@ class ProductServiceImplTest {
     assertNotNull(result);
     assertFalse(result.isEmpty());
     assertEquals(1, result.size());
-    verify(productRepository, times(1)).findAll();
+    verify(productRepository, times(1))
+        .findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query, sort);
   }
 
   @Test
@@ -171,7 +178,7 @@ class ProductServiceImplTest {
     // Arrange
     Company company = new Company();
     List<Product> products = List.of(new Product());
-    when(productRepository.findAllByCompany(company)).thenReturn(products);
+    when(productRepository.findAllByCompanyOrderByCreateDateDesc(company)).thenReturn(products);
 
     // Act
     List<Product> result = productService.findAllProductsByCompany(company);
@@ -179,7 +186,7 @@ class ProductServiceImplTest {
     // Assert
     assertNotNull(result);
     assertFalse(result.isEmpty());
-    verify(productRepository, times(1)).findAllByCompany(company);
+    verify(productRepository, times(1)).findAllByCompanyOrderByCreateDateDesc(company);
   }
 
   @Test
@@ -212,7 +219,11 @@ class ProductServiceImplTest {
     product3.setCreateDate(LocalDateTime.of(2024, 1, 2, 0, 0));
 
     List<Product> products = List.of(product1, product2, product3);
-    when(productRepository.findAllByProductStatus(ProductStatus.ACTIVE)).thenReturn(products);
+    when(productRepository.findAllByProductStatusOrderByCreateDateDesc(ProductStatus.ACTIVE))
+        .thenReturn(
+            products.stream()
+                .sorted((p1, p2) -> p2.getCreateDate().compareTo(p1.getCreateDate()))
+                .toList());
     Cart cart = new Cart();
     cart.setProducts(List.of(product2));
     when(cartRepository.findByUserEmailAndCartStatus(username, CartStatus.ACTIVE))
@@ -224,7 +235,8 @@ class ProductServiceImplTest {
     // Assert
     assertNotNull(result);
     assertFalse(result.isEmpty());
-    verify(productRepository, times(1)).findAllByProductStatus(ProductStatus.ACTIVE);
+    verify(productRepository, times(1))
+        .findAllByProductStatusOrderByCreateDateDesc(ProductStatus.ACTIVE);
     assertEquals(3, result.size());
     // make sure it got sorted by date desc
     assertEquals(product2, result.get(0));
